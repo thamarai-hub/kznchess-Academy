@@ -1,6 +1,11 @@
 # KZN Chess Academy website
 
-Single-page, mobile-first website for KZN Chess Academy (https://kznchessacademy.org), built with React, TypeScript, Tailwind CSS v4 and Vite. The production build is prerendered, so search engines and social previews receive the full page as HTML.
+Mobile-first website for KZN Chess Academy (https://kznchessacademy.org), built with React, TypeScript, Tailwind CSS v4 and Vite. It has two pages:
+
+- `/`: the main single-page site (About, Programmes, Coaches, Achievements, Gallery, FAQs, Contact)
+- `/donate/`: the donation page
+
+The production build prerenders both pages, so search engines and social previews receive the full content as HTML.
 
 ## Run it
 
@@ -11,7 +16,7 @@ npm run build     # type-check, build and prerender into dist/
 npm run preview   # serve the production build locally
 ```
 
-Deploy the contents of `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, cPanel hosting, etc.) and point `kznchessacademy.org` at it.
+Deploy the contents of `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, cPanel hosting, etc.) and point `kznchessacademy.org` at it. The donate page is built to `dist/donate/index.html`, so it is served at `/donate/` with no extra configuration.
 
 ## Where things live
 
@@ -19,7 +24,9 @@ Deploy the contents of `dist/` to any static host (Netlify, Vercel, Cloudflare P
 | --- | --- |
 | All academy details (phone, email, WhatsApp, address, socials, coaches, FAQs, photo captions) | `src/data/site.ts` |
 | Brand colours and font | `src/index.css` (`@theme` block) |
-| Page title, meta description, Open Graph, structured data | `index.html` |
+| Page title, meta description, Open Graph, structured data | `index.html` (home), `donate/index.html` (donate) |
+| Donate page sections | `src/pages/DonatePage.tsx`, `src/components/DonationForm.tsx` |
+| Donation settings (bank details, online payment link) | `donation` in `src/data/site.ts` |
 | Sections | `src/components/*.tsx` (one component per section) |
 | Images | `public/images/` |
 | robots.txt and sitemap | `public/` |
@@ -32,6 +39,16 @@ The form validates every field. `FORM_ENDPOINT` in `src/data/site.ts` controls d
 
 - **Empty (current setting):** after validation the visitor is shown a clear "ready to send, not yet delivered" message with two buttons that open WhatsApp or their email app with the enquiry already written. The site never claims the enquiry was submitted.
 - **Set to a URL** (for example a Formspree form URL or a serverless function that accepts a JSON POST): the form posts to it and shows "Enquiry sent" only when the server responds successfully. If the request fails, the WhatsApp and email options appear instead.
+
+## Donations
+
+No payment is taken on the website. The donate page offers three ways to give (bank transfer, chess equipment, sponsorship/partnership) and a donation form. The form validates the details and prepares a message for WhatsApp or email, exactly like the enquiry form, and never claims a donation was made.
+
+Settings live in `donation` in `src/data/site.ts`:
+
+- **`bank`**: while `bankName` and `accountNumber` are empty, the page shows a **Request banking details** button that opens WhatsApp with a prepared message. Once the academy confirms its details, fill them in and the page shows them with copy buttons instead. Only publish details confirmed by the academy.
+- **`paymentUrl`**: a hosted payment page (for example PayFast, Yoco or SnapScan). When set, a **Donate online** button appears; when empty it is hidden.
+- If `FORM_ENDPOINT` is set, donation details are posted there with `formType: "donation"`.
 
 ## Photo asset map
 
@@ -71,4 +88,5 @@ Not used, on purpose:
 5. **Form delivery.** Optionally set `FORM_ENDPOINT` (see above).
 6. **Class days and times.** Only the 09:00–18:00 window is shown; add a timetable if the academy wants one published.
 7. **Logo resolution.** The supplied logo is 767 × 558 px. A vector (SVG) version would look sharper on high-resolution screens.
-8. After deploying, submit `https://kznchessacademy.org/sitemap.xml` in Google Search Console and create or claim the academy's Google Business Profile with the same address and phone number.
+8. **Donations.** Confirm the bank details to publish (or keep the request-on-WhatsApp flow), whether the academy wants an online payment link, and that it accepts equipment donations and sponsorships as described on the donate page. If the academy is a registered PBO with Section 18A approval, the donate page can say that donations are tax-deductible; it currently makes no such claim.
+9. After deploying, submit `https://kznchessacademy.org/sitemap.xml` in Google Search Console and create or claim the academy's Google Business Profile with the same address and phone number.

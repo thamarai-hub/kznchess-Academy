@@ -45,6 +45,43 @@ export function programmeEnquiry(programme: string): string {
   return `Hello KZN Chess Academy, I would like to enquire about ${programme} for my child. Please share the available options, fees, lesson times and registration details.`;
 }
 
+// The site has two pages: the single-page home and /donate/.
+// Section links from the donate page go back to the home page anchors.
+export type Page = 'home' | 'donate';
+export const DONATE_PATH = '/donate/';
+export function sectionHref(page: Page, id: string): string {
+  return page === 'home' ? `#${id}` : `/#${id}`;
+}
+
+// Donation settings. Leave a field empty until the academy confirms it:
+// empty bank details show a "request banking details" option instead, and an
+// empty paymentUrl hides the online payment option. Never publish unconfirmed
+// banking details.
+export const donation = {
+  bank: {
+    bankName: '',
+    accountName: '',
+    accountNumber: '',
+    branchCode: '',
+    reference: 'DONATION + your surname',
+  },
+  // A hosted payment page, for example a PayFast, Yoco or SnapScan link.
+  paymentUrl: '',
+} as const;
+
+export const hasBankDetails = Boolean(donation.bank.accountNumber && donation.bank.bankName);
+
+export const DONATION_ENQUIRY =
+  'Hello KZN Chess Academy, I would like to make a donation to support the academy. Please share your banking details and how I can contribute.';
+
+export const donationAreas = [
+  'Wherever it’s needed most',
+  'Chess in the Community',
+  'Infinite Chess',
+  'Chess in Schools',
+  'Tournaments and chess camps',
+];
+
 export const navItems = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },

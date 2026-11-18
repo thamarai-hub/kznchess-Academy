@@ -1,6 +1,7 @@
-import { useRef, useState, type FormEvent, type ReactNode } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { academy, FORM_ENDPOINT, fullAddress, mapsDirectionsUrl, programmeOptions, whatsappLink } from '../data/site';
 import { btnPrimary, btnWhatsApp, container, Icon, SectionHeading } from './ui';
+import { errorText, Field, fieldBase, isEmail, isPhone, type Status } from './form';
 
 type Values = {
   name: string;
@@ -20,9 +21,8 @@ const formats = ['Online', 'At the academy', 'Private lessons'];
 function validate(v: Values): Errors {
   const e: Errors = {};
   if (v.name.trim().length < 2) e.name = 'Enter the parent or guardian’s name.';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email.trim())) e.email = 'Enter an email address like name@example.com.';
-  const digits = v.phone.replace(/\D/g, '');
-  if (digits.length < 9 || digits.length > 15 || /[^\d\s+()-]/.test(v.phone)) e.phone = 'Enter a phone or WhatsApp number, for example +27 82 123 4567.';
+  if (!isEmail(v.email)) e.email = 'Enter an email address like name@example.com.';
+  if (!isPhone(v.phone)) e.phone = 'Enter a phone or WhatsApp number, for example +27 82 123 4567.';
   const age = Number(v.age);
   if (!v.age.trim() || !Number.isInteger(age) || age < 1 || age > 99) e.age = 'Enter your child’s age in years.';
   if (!v.programme) e.programme = 'Choose a programme, or “Not sure yet”.';
@@ -46,33 +46,6 @@ function composeMessage(v: Values): string {
   lines.push('', 'Please share the available programmes, fees, lesson times and registration details.');
   return lines.join('\n');
 }
-
-const fieldBase =
-  'block w-full rounded-xl border bg-white px-4 py-3 text-[16px] text-ink placeholder:text-slate/60 transition-colors focus:border-royal focus:outline-none focus:ring-4 focus:ring-royal/15';
-const errorText = 'mt-1.5 text-sm font-medium text-[#b42318]';
-
-function Field({ id, label, error, hint, children }: { id: string; label: string; error?: string; hint?: string; children: ReactNode }) {
-  return (
-    <div>
-      <label htmlFor={id} className="mb-2 block text-[15px] font-semibold text-navy">
-        {label}
-      </label>
-      {children}
-      {hint && !error && (
-        <p id={`${id}-hint`} className="mt-1.5 text-sm text-slate">
-          {hint}
-        </p>
-      )}
-      {error && (
-        <p id={`${id}-error`} className={errorText}>
-          {error}
-        </p>
-      )}
-    </div>
-  );
-}
-
-type Status = { kind: 'idle' } | { kind: 'sending' } | { kind: 'sent' } | { kind: 'ready'; message: string; failed?: boolean };
 
 export default function ContactForm() {
   const [values, setValues] = useState<Values>(initial);

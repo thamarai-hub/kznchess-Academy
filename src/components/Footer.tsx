@@ -1,9 +1,10 @@
-import { academy, fullAddress, logo, navItems, whatsappLink } from '../data/site';
+import { academy, DONATE_PATH, fullAddress, logo, navItems, sectionHref, whatsappLink, type Page } from '../data/site';
 import { container, Icon } from './ui';
 
 const learning = ['Online Chess Classes', 'Group Chess Classes', 'Private Chess Coaching', 'Chess in Schools', 'Chess in the Community', 'Infinite Chess'];
 
-export default function Footer() {
+export default function Footer({ page = 'home' }: { page?: Page }) {
+  const href = (id: string) => sectionHref(page, id);
   const year = new Date().getFullYear();
   const link = 'inline-flex min-h-9 items-center text-white/75 hover:text-white';
   const social = 'inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-white hover:border-gold hover:text-gold';
@@ -12,7 +13,7 @@ export default function Footer() {
       <div className={container}>
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr_1.2fr] lg:gap-10">
           <div>
-            <a href="#home" className="inline-block rounded-2xl bg-white p-3" aria-label="KZN Chess Academy, back to top">
+            <a href={page === 'home' ? '#home' : '/'} className="inline-block rounded-2xl bg-white p-3" aria-label={page === 'home' ? 'KZN Chess Academy, back to top' : 'KZN Chess Academy home'}>
               <img src={logo.src} alt={logo.alt} width={logo.width} height={logo.height} loading="lazy" className="h-14 w-auto" />
             </a>
             <p className="mt-6 max-w-xs leading-relaxed text-white/70">
@@ -26,11 +27,14 @@ export default function Footer() {
             <ul className="mt-4 space-y-1">
               {navItems.map((n) => (
                 <li key={n.id}>
-                  <a href={`#${n.id}`} className={link}>{n.label}</a>
+                  <a href={href(n.id)} className={link}>{n.label}</a>
                 </li>
               ))}
               <li>
-                <a href="#faq" className={link}>FAQs</a>
+                <a href={href('faq')} className={link}>FAQs</a>
+              </li>
+              <li>
+                <a href={DONATE_PATH} className={link} aria-current={page === 'donate' ? 'page' : undefined}>Donate</a>
               </li>
             </ul>
           </nav>
@@ -40,7 +44,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-1">
               {learning.map((p) => (
                 <li key={p}>
-                  <a href="#programmes" className={link}>{p}</a>
+                  <a href={href('programmes')} className={link}>{p}</a>
                 </li>
               ))}
             </ul>

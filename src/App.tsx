@@ -15,6 +15,8 @@ import FinalCTA from './components/FinalCTA';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import DonatePage from './pages/DonatePage';
+import type { Page } from './data/site';
 
 // Fades sections in as they scroll into view (skipped when reduced motion is set; see index.css).
 function useReveal() {
@@ -40,27 +42,33 @@ function useReveal() {
   }, []);
 }
 
-export default function App() {
+function HomePage() {
+  return (
+    <>
+      <Hero />
+      <TrustHighlights />
+      <AboutSection />
+      <ProgrammesGrid />
+      <WhyChooseUs />
+      <CoachesSection />
+      <AchievementsSection />
+      <Gallery />
+      <Testimonials />
+      <MissionVision />
+      <FAQAccordion />
+      <FinalCTA />
+      <ContactForm />
+    </>
+  );
+}
+
+export default function App({ page = 'home' }: { page?: Page }) {
   useReveal();
   return (
     <>
-      <Header />
-      <main id="main">
-        <Hero />
-        <TrustHighlights />
-        <AboutSection />
-        <ProgrammesGrid />
-        <WhyChooseUs />
-        <CoachesSection />
-        <AchievementsSection />
-        <Gallery />
-        <Testimonials />
-        <MissionVision />
-        <FAQAccordion />
-        <FinalCTA />
-        <ContactForm />
-      </main>
-      <Footer />
+      <Header page={page} />
+      <main id="main">{page === 'donate' ? <DonatePage /> : <HomePage />}</main>
+      <Footer page={page} />
       <WhatsAppButton />
     </>
   );

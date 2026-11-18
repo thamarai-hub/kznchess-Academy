@@ -144,6 +144,21 @@ export const Icon = {
   Spark: (p: IconProps) => (
     <svg {...base(p)}><path d="M12 3.5v4M12 16.5v4M3.5 12h4M16.5 12h4M6 6l2.6 2.6M15.4 15.4 18 18M6 18l2.6-2.6M15.4 8.6 18 6" /></svg>
   ),
+  Bank: (p: IconProps) => (
+    <svg {...base(p)}><path d="M3.5 9.5 12 4l8.5 5.5M5 10v7M9.5 10v7M14.5 10v7M19 10v7M3.5 20h17" /></svg>
+  ),
+  Box: (p: IconProps) => (
+    <svg {...base(p)}><path d="m12 3.5 8 4v9l-8 4-8-4v-9l8-4Z" /><path d="m4 7.5 8 4 8-4M12 11.5v9" /></svg>
+  ),
+  Briefcase: (p: IconProps) => (
+    <svg {...base(p)}><rect x="3.5" y="7.5" width="17" height="12" rx="2.5" /><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5M3.5 12.5h17M10.5 12.5v1.5h3v-1.5" /></svg>
+  ),
+  Copy: (p: IconProps) => (
+    <svg {...base(p)}><rect x="8.5" y="8.5" width="11" height="11" rx="2" /><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5" /></svg>
+  ),
+  Check: (p: IconProps) => (
+    <svg {...base(p)}><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+  ),
   Puzzle: (p: IconProps) => (
     <svg {...base(p)}><path d="M9 4h3.5a1.8 1.8 0 1 1 3.5 0H19v4a1.8 1.8 0 1 0 0 3.5V15h-3a1.8 1.8 0 1 0-3.5 0H9v-3.5a1.8 1.8 0 1 1 0-3.5V4Z" /></svg>
   ),
